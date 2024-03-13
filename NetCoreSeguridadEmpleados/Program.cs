@@ -1,8 +1,20 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using NetCoreSeguridadEmpleados.Data;
 using NetCoreSeguridadEmpleados.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Habilitamos seguridad
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme =
+    CookieAuthenticationDefaults.AuthenticationScheme;
+    options.DefaultSignInScheme =
+    CookieAuthenticationDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme =
+    CookieAuthenticationDefaults.AuthenticationScheme;
+}).AddCookie();
 
 // Add services to the container.
 string connectionString =
@@ -11,7 +23,9 @@ builder.Services.AddTransient<RepositoryEmpleados>();
 builder.Services.AddDbContext<EmpleadosContext>
     (options => options.UseSqlServer(connectionString));
 
-builder.Services.AddControllersWithViews();
+// Personalizamos rutas
+builder.Services.AddControllersWithViews
+    (options => options.EnableEndpointRouting = false);
 
 var app = builder.Build();
 
@@ -28,10 +42,14 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapControllerRoute(
+app.UseMvc(routes =>
+{
+    routes.MapRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    template: "{controller=Home}/{action=Index}/{id?}");
+});
 
 app.Run();

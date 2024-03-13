@@ -13,6 +13,16 @@ namespace NetCoreSeguridadEmpleados.Repositories
             this.context = context;
         }
 
+        public async Task<Empleado> LoginEmpleadoAsync
+            (string apellido, int idEmpleado)
+        {
+            Empleado empleado = await this.context.Empleados
+                .FirstOrDefaultAsync(e => e.Apellido == apellido
+                 && e.IdEmpleado == idEmpleado);
+            return empleado;
+
+        }
+
         public async Task<List<Empleado>> GetEmpleadosAsync()
         {
             return await this.context.Empleados.ToListAsync();
