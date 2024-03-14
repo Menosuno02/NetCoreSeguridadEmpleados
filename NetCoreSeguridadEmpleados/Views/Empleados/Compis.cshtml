@@ -8,13 +8,7 @@
 
 @if (Context.User.IsInRole("PRESIDENTE") || Context.User.IsInRole("DIRECTOR"))
 {
-    <form method="post">
-        <label>Incremento</label>
-        <input type="text" name="incremento" class="form-control" />
-        <button class="btn btn-info">
-            Subir salarios
-        </button>
-    </form>
+    <partial name="_FormUpdateSalarios" />
 }
 
 <table class="table table-borderless">

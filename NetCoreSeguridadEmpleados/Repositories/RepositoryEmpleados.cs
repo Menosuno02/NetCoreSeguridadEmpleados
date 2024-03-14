@@ -20,7 +20,6 @@ namespace NetCoreSeguridadEmpleados.Repositories
                 .FirstOrDefaultAsync(e => e.Apellido == apellido
                  && e.IdEmpleado == idEmpleado);
             return empleado;
-
         }
 
         public async Task<List<Empleado>> GetEmpleadosAsync()
